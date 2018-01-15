@@ -178,28 +178,30 @@ class ViewController: UIViewController {
         let fieldPlane = fieldNode.geometry as! SCNBox
         
       
-        var obstacleHeight = CGFloat(0.1)
-        var obstacleWidth = CGFloat(0.1)
-        var obstacleLength = CGFloat(0.1)
+        let obstacleHeight = CGFloat(0.1)
+        let obstacleWidth = CGFloat(0.1)
+        let obstacleLength = CGFloat(0.1)
         
+        
+        // Größe des Spielfeldes
         let width = Float(fieldPlane.width)
          // print(String(width) + " Width")
         let height = Float(fieldPlane.height)
-        
         let length = Float(fieldPlane.length)
         // print(String(height) + " Height")
-        let minX = pos.x
-       //   print(String(minX) + " Min X")
+        
+        
+        
+        // Spielfeld minimum größe
+//        let minX = pos.x
+//        let minZ = pos.z
+//        let minY = pos.y
+        
+        
         let maxX = (Float(GKRandomSource.sharedRandom().nextInt(upperBound: 100))/100)-0.25
-          print(String(maxX) + " Max X")
-        let minZ = pos.z
-        // print(String(minZ) + " Min Z")
         let maxZ = pos.z + length/2
-        //print(String(maxZ) + " Max Z")
-        let minY = pos.y
-       // print(String(minZ) + " Min Y")
         let maxY = pos.y + height
-        //print(String(maxZ) + " Max Y")
+ 
         
         
         
