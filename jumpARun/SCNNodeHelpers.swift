@@ -44,9 +44,30 @@ func createRandomObstacleNode(center: vector_float3, width: CGFloat, height: CGF
     fieldNode.position = SCNVector3Make(center.x, center.y, center.z)
     //    fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / Float(width), Float(length), Float(height), 0)
     // fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-    //    print(String(center.x) + " Center X" )
-    //    print(String(center.y) + " Center Y" )
-    //    print(String(center.z) + " Center Z" )
+
+    
+    return fieldNode
+}
+
+// Create Player NODE
+func createPlayerFigureNode(center: vector_float3, width: CGFloat, height: CGFloat, length: CGFloat ) -> SCNNode {
+    let player = SCNBox(width: width, height: height, length: length, chamferRadius: 0)
+    
+    let planeMaterial = SCNMaterial()
+    
+    
+    planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(1)
+    
+    
+    
+    
+    player.materials = [planeMaterial]
+    
+    let fieldNode = SCNNode(geometry: player)
+    fieldNode.position = SCNVector3Make(center.x, center.y, center.z)
+    //    fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / Float(width), Float(length), Float(height), 0)
+    // fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+    
     
     return fieldNode
 }
@@ -75,19 +96,19 @@ func createFieldNode(center: vector_float3) -> SCNNode {
 
 
 
-func createFieldNode2(center: vector_float3) -> SCNNode {
-    let field = SCNBox(width: 0.5, height: 0.05, length: 0.5, chamferRadius: 0)
-
-    let planeMaterial = SCNMaterial()
-    planeMaterial.diffuse.contents = UIColor.red.withAlphaComponent(1)
-    field.materials = [planeMaterial]
-
-    let fieldNode = SCNNode(geometry: field)
-    fieldNode.position = SCNVector3Make(center.x, 0, 0)
-    // fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-
-    return fieldNode
-}
+//func createFieldNode2(center: vector_float3) -> SCNNode {
+//    let field = SCNBox(width: 0.5, height: 0.05, length: 0.5, chamferRadius: 0)
+//
+//    let planeMaterial = SCNMaterial()
+//    planeMaterial.diffuse.contents = UIColor.red.withAlphaComponent(1)
+//    field.materials = [planeMaterial]
+//
+//    let fieldNode = SCNNode(geometry: field)
+//    fieldNode.position = SCNVector3Make(center.x, 0, 0)
+//    // fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+//
+//    return fieldNode
+//}
 
 
 

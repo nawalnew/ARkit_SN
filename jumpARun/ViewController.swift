@@ -43,17 +43,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the view's delegate
-        sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
-        
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
+//        // Set the view's delegate
+//        sceneView.delegate = self
+//
+//        // Show statistics such as fps and timing information
+//        sceneView.showsStatistics = true
+//
+//        // Create a new scene
+//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+//
+//        // Set the scene to the view
+//        sceneView.scene = scene
         
         
         
@@ -216,7 +216,72 @@ class ViewController: UIViewController {
         obstacle.runAction(moveBy)
         
     }
+    
+    // Create Player
+    @objc func createPlayerFigure() {
+        let pos = fieldNode.worldPosition
+        let fieldPlane = fieldNode.geometry as! SCNBox
+        
+        
+        let playerHeight = CGFloat(0.25)
+        let playerWidth = CGFloat(0.1)
+        let playerLength = CGFloat(0.1)
+        
+        
+        // Größe des Spielfeldes
+        let width = Float(fieldPlane.width)
+        // print(String(width) + " Width")
+        let height = Float(fieldPlane.height)
+        let length = Float(fieldPlane.length)
+        // print(String(height) + " Height")
+        
+        
+        
+        // Spielfeld minimum größe
+        //        let minX = pos.x
+        //        let minZ = pos.z
+        //        let minY = pos.y
+        
+        
+        let posX = pos.x - (width-1)
+        
+        let posY = pos.y + height
+        
+        let posZ = pos.z - (length-1)
+        
+        
+        
+        
+        
+        
+        // Create Player Object
+        let player = createPlayerFigureNode(center: vector_float3(posX, posY, posZ), width: playerWidth, height: playerHeight, length: playerLength )
+        self.objects.append(player)
+        sceneView.scene.rootNode.addChildNode(player)
+        
+        
+    }
+    
+    func playerJumpFunction(){
+        let playerObject = self.fieldNode.childNode(withName: "player", recursively: false)
+        // move up 20
+        let jumpUpAction = SCNAction.moveBy(x: 2, y:2, z:0, duration:0.2)
+        // move down 20
+        let jumpDownAction = SCNAction.moveBy(x: 2, y:-2, z:0, duration:0.2)
+        // sequence of move yup then down
+        let jumpSequence = SCNAction.sequence([jumpUpAction, jumpDownAction])
+        
+        
+        
+        // make player run sequence
+        playerObject?.runAction(jumpSequence)
+        print("test")
+    }
+    
 }
+
+
+
 
 
 
@@ -271,16 +336,20 @@ extension ViewController: ARSCNViewDelegate {
                     self.objects.append(self.fieldNode)
                     node.addChildNode(self.fieldNode)
                     
-                    
+                    // Create Random Obstacles every 2 seconds
                     let date = Date().addingTimeInterval(2)
                     let timer = Timer(fireAt: date, interval: 2, target: self, selector: #selector(self.createRandomObstacles), userInfo: nil, repeats: true)
                     RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
-                    // Create Random Objects
-                   // self.createRandomObstacles()
+                    
+                    
+                    // Create Player Objects
+                    self.createPlayerFigure()
                     
                     
                     
                 #endif
+                
+                // ON CLICK
             } else {
                 
                 // Create a new scene
@@ -291,14 +360,16 @@ extension ViewController: ARSCNViewDelegate {
 //                    anchor.transform.columns.3.z
 //                )
                 
-                let fieldNode = createFieldNode2(center: vector_float3(anchor.transform.columns.3.x,anchor.transform.columns.3.y,anchor.transform.columns.3.z))
+                self.playerJumpFunction()
                 
-                print(anchor.transform.columns.3.y)
-                print(anchor.transform.columns.3.x)
-                print(anchor.transform.columns.3.z)
-                
-                self.objects.append(fieldNode)
-                node.addChildNode(fieldNode)
+//                let fieldNode = createFieldNode2(center: vector_float3(anchor.transform.columns.3.x,anchor.transform.columns.3.y,anchor.transform.columns.3.z))
+//
+//                print(anchor.transform.columns.3.y)
+//                print(anchor.transform.columns.3.x)
+//                print(anchor.transform.columns.3.z)
+//
+//                self.objects.append(fieldNode)
+//                node.addChildNode(fieldNode)
                 
                 // anchor.transform.columns.3.x
                 
