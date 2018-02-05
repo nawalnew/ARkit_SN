@@ -8,6 +8,7 @@
 
 import SceneKit
 import ARKit
+import GameplayKit
 
 func nodeWithModelName(_ modelName: String) -> SCNNode {
     return SCNScene(named: modelName)!.rootNode.clone()
@@ -26,14 +27,14 @@ func createPlaneNode(center: vector_float3, extent: vector_float3) -> SCNNode {
     return planeNode
 }
 
-// HELP
+// Random Obstacles
 func createRandomObstacleNode(center: vector_float3, width: CGFloat, height: CGFloat, length: CGFloat ) -> SCNNode {
     let field = SCNBox(width: width, height: height, length: length, chamferRadius: 0)
     
     let planeMaterial = SCNMaterial()
     
     
-    planeMaterial.diffuse.contents = UIColor.blue.withAlphaComponent(1)
+    planeMaterial.diffuse.contents = "blockstone.jpg"
     
     
     
@@ -49,6 +50,7 @@ func createRandomObstacleNode(center: vector_float3, width: CGFloat, height: CGF
     return fieldNode
 }
 
+// Spielfigur erstellen
 // Create Player NODE
 func createPlayerFigureNode(center: vector_float3, width: CGFloat, height: CGFloat, length: CGFloat ) -> SCNNode {
     let player = SCNBox(width: width, height: height, length: length, chamferRadius: 0)
@@ -72,16 +74,14 @@ func createPlayerFigureNode(center: vector_float3, width: CGFloat, height: CGFlo
     return fieldNode
 }
 
+// Spielfeld erstellen
 func createFieldNode(center: vector_float3) -> SCNNode {
     let field = SCNBox(width: 1, height: 0.05, length: 1, chamferRadius: 0)
 
     let planeMaterial = SCNMaterial()
-
-    if center.y == 0.1 {
-        planeMaterial.diffuse.contents = UIColor.blue.withAlphaComponent(1)
-    } else {
-        planeMaterial.diffuse.contents = UIColor.red.withAlphaComponent(1)
-    }
+    // Material festlegen
+        planeMaterial.diffuse.contents = "gras.jpg"
+    
 
     field.materials = [planeMaterial]
 
@@ -151,4 +151,13 @@ func lineFrom(vector vector1: SCNVector3, toVector vector2: SCNVector3) -> SCNGe
     
     return SCNGeometry(sources: [source], elements: [element])
 }
+
+
+func applyForce(to node: SCNNode) {
+    let forceX = Float(GKRandomSource.sharedRandom().nextInt(upperBound: 3))
+    let forceY = Float(GKRandomSource.sharedRandom().nextInt(upperBound: 3))
+    let forceZ = Float(GKRandomSource.sharedRandom().nextInt(upperBound: 3))
+    node.physicsBody?.applyForce(SCNVector3Make(forceX, forceY, forceZ), asImpulse: true)
+}
+
 

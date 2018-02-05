@@ -42,18 +42,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        // Set the view's delegate
-//        sceneView.delegate = self
-//
-//        // Show statistics such as fps and timing information
-//        sceneView.showsStatistics = true
-//
-//        // Create a new scene
-//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-//
-//        // Set the scene to the view
-//        sceneView.scene = scene
+
         
         
         
@@ -92,14 +81,25 @@ class ViewController: UIViewController {
     
     // HIT TEST
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let hit = sceneView.hitTest(viewCenter, types: [.existingPlaneUsingExtent]).first {
-            let myAnchor = ARAnchor(transform: hit.worldTransform)
-            sceneView.session.add(anchor: myAnchor)
-            
-            return
-        } else if let hit = sceneView.hitTest(viewCenter, types: [.featurePoint]).last {
-            sceneView.session.add(anchor: ARAnchor(transform: hit.worldTransform))
-            return
+//        if let hit = sceneView.hitTest(viewCenter, types: [.existingPlaneUsingExtent]).first {
+//            let myAnchor = ARAnchor(transform: hit.worldTransform)
+//            sceneView.session.add(anchor: myAnchor)
+//
+//
+//            return
+//
+//        }else if let hit = sceneView.hitTest(viewCenter, types: [.featurePoint]).last {
+//            sceneView.session.add(anchor: ARAnchor(transform: hit.worldTransform))
+//            return
+//        }
+
+        let hits = sceneView.hitTest(viewCenter, options: nil)
+        if !planeDetectionActive && hits.count > 0 && hits[0].isKind(of: SCNHitTestResult.self) {  //found an element!
+            let node = hits[0].node
+            if node.name == "player" {
+                playerJumpFunction(to: node)
+                return
+            }
         }
     }
     
@@ -110,16 +110,6 @@ class ViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
     }
 
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
 
     
     
@@ -179,7 +169,7 @@ class ViewController: UIViewController {
         
       
         let obstacleHeight = CGFloat(0.1)
-        let obstacleWidth = CGFloat(0.1)
+        let obstacleWidth = CGFloat(0.6)
         let obstacleLength = CGFloat(0.1)
         
         
@@ -214,6 +204,10 @@ class ViewController: UIViewController {
         
         let moveBy = SCNAction.moveBy(x: 0, y: 0, z: -1, duration: 2)
         obstacle.runAction(moveBy)
+       
+        
+        
+        
         
     }
     
@@ -221,6 +215,8 @@ class ViewController: UIViewController {
     @objc func createPlayerFigure() {
         let pos = fieldNode.worldPosition
         let fieldPlane = fieldNode.geometry as! SCNBox
+        
+      
         
         
         let playerHeight = CGFloat(0.25)
@@ -256,28 +252,32 @@ class ViewController: UIViewController {
         
         // Create Player Object
         let player = createPlayerFigureNode(center: vector_float3(posX, posY, posZ), width: playerWidth, height: playerHeight, length: playerLength )
+        
+        
+        player.name = "player"
         self.objects.append(player)
         sceneView.scene.rootNode.addChildNode(player)
         
         
     }
     
-    func playerJumpFunction(){
-        let playerObject = self.fieldNode.childNode(withName: "player", recursively: false)
-        // move up 20
-        let jumpUpAction = SCNAction.moveBy(x: 2, y:2, z:0, duration:0.2)
+    func playerJumpFunction(to node: SCNNode){
+        //let playerObject = self.fieldNode.childNode(withName: "player", recursively: false)
+        //let object = fieldNode.childNode(withName: "player", recursively: true)
+         //move up 20
+        let jumpUpAction = SCNAction.moveBy(x: 0, y:0.7, z:0, duration:0.5)
         // move down 20
-        let jumpDownAction = SCNAction.moveBy(x: 2, y:-2, z:0, duration:0.2)
+        let jumpDownAction = SCNAction.moveBy(x: 0, y:-0.7, z:0, duration:0.5)
         // sequence of move yup then down
         let jumpSequence = SCNAction.sequence([jumpUpAction, jumpDownAction])
         
         
         
         // make player run sequence
-        playerObject?.runAction(jumpSequence)
-        print("test")
+        node.runAction(jumpSequence)
+       
     }
-    
+ 
 }
 
 
@@ -349,58 +349,10 @@ extension ViewController: ARSCNViewDelegate {
                     
                 #endif
                 
-                // ON CLICK
+               
             } else {
-                
-                // Create a new scene
-//                let cameraPosition = SCNVector3(
-//                    /* At this moment you could be sure, that camera properly oriented in world coordinates */
-//                    anchor.transform.columns.3.x,
-//                    anchor.transform.columns.3.y,
-//                    anchor.transform.columns.3.z
-//                )
-                
-                self.playerJumpFunction()
-                
-//                let fieldNode = createFieldNode2(center: vector_float3(anchor.transform.columns.3.x,anchor.transform.columns.3.y,anchor.transform.columns.3.z))
-//
-//                print(anchor.transform.columns.3.y)
-//                print(anchor.transform.columns.3.x)
-//                print(anchor.transform.columns.3.z)
-//
-//                self.objects.append(fieldNode)
-//                node.addChildNode(fieldNode)
-                
-                // anchor.transform.columns.3.x
-                
-                
-                
-//                switch self.currentMode {
-//                case .none:
-//                    break
-//                case .addField:
-//                    let fieldNode = createFieldNode(center: planeAnchor.center)
-//                    self.objects.append(fieldNode)
-//                    node.addChildNode(fieldNode)
-//                    break
-//
-//                case .placeObject(let name):
-                
-                    
-//                    let fieldNode = createFieldNode(center: planeAnchor.center, extent: planeAnchor.extent)
-//                    node.addChildNode(fieldNode)
-//
-                    
-//                    let modelClone = SCNScene(named: name)!.rootNode.clone()
-//
-//                    self.objects.append(modelClone)
-//                    node.addChildNode(modelClone)
-//                case .measure:
-//                    let spehereNode = createSphereNode(radius: 0.02)
-//                    self.objects.append(spehereNode)
-//                    node.addChildNode(spehereNode)
-//                    self.measuringNodes.append(node)
-//                }
+                 // ON CLICK
+             
             }
         }
     }
