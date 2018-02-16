@@ -90,6 +90,7 @@ class ViewController: UIViewController {
             let node = hits[0].node
             
             // IF Hittest player object = true than jump
+            // Sorry for that solution. I tried so often to call the object by itself on click. but no luck -.- 
             if node.name == "player" {
                 playerJumpFunction(to: node)
                 return

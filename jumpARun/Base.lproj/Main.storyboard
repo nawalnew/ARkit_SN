@@ -35,6 +35,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="*" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gbl-Qk-G1H">
+                                <rect key="frame" x="181.5" y="322" width="12" height="22"/>
+                                <color key="textColor" red="1" green="0.30420588719430053" blue="0.2302963388279593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -42,6 +48,8 @@
                             <constraint firstItem="sQY-1c-chS" firstAttribute="bottom" secondItem="Mrb-xQ-Thu" secondAttribute="bottom" id="8uV-DC-7q4"/>
                             <constraint firstItem="sQY-1c-chS" firstAttribute="top" secondItem="hwW-XT-EhC" secondAttribute="top" id="PPz-fA-5ck"/>
                             <constraint firstItem="sQY-1c-chS" firstAttribute="leading" secondItem="Mrb-xQ-Thu" secondAttribute="leading" id="nWZ-UX-oCd"/>
+                            <constraint firstItem="Gbl-Qk-G1H" firstAttribute="centerY" secondItem="hwW-XT-EhC" secondAttribute="centerY" id="oCb-eh-kit"/>
+                            <constraint firstItem="Gbl-Qk-G1H" firstAttribute="centerX" secondItem="hwW-XT-EhC" secondAttribute="centerX" id="vQs-9q-rRy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mrb-xQ-Thu"/>
                     </view>
