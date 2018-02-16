@@ -11,12 +11,12 @@ import SceneKit
 import ARKit
 import GameplayKit
 
-enum FunctionMode {
-    case none
-    case addField
-    case placeObject(String)
-    case measure
-}
+//enum FunctionMode {
+//    case none
+//    case addField
+//    case placeObject(String)
+//    case measure
+//}
 
 
 class ViewController: UIViewController {
@@ -27,18 +27,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var fieldButton: UIButton!
     
-    var currentMode: FunctionMode = .none
+//    var currentMode: FunctionMode = .none
     var planeDetectionActive = true
     var fieldNode = SCNNode()
     
-    @IBAction func fieldButtonTapped(_ sender: Any) {
+//    @IBAction func fieldButtonTapped(_ sender: Any) {
         // configureWorldBottom()
         // currentMode = .placeObject("Models.scnassets/box/box.scn")
-        currentMode = .addField
-    }
+//        currentMode = .addField
+//    }
     
-    var objects: [SCNNode] = []
-    var measuringNodes: [SCNNode] = []
+   var objects: [SCNNode] = []
+//    var measuringNodes: [SCNNode] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +53,13 @@ class ViewController: UIViewController {
     }
     
     
+    
+    // remove Objects function
     func removeAllObjects() {
         for object in objects {
             object.removeFromParentNode()
         }
-        
+
         objects = []
     }
     
@@ -81,21 +83,13 @@ class ViewController: UIViewController {
     
     // HIT TEST
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let hit = sceneView.hitTest(viewCenter, types: [.existingPlaneUsingExtent]).first {
-//            let myAnchor = ARAnchor(transform: hit.worldTransform)
-//            sceneView.session.add(anchor: myAnchor)
-//
-//
-//            return
-//
-//        }else if let hit = sceneView.hitTest(viewCenter, types: [.featurePoint]).last {
-//            sceneView.session.add(anchor: ARAnchor(transform: hit.worldTransform))
-//            return
-//        }
 
+        
         let hits = sceneView.hitTest(viewCenter, options: nil)
         if !planeDetectionActive && hits.count > 0 && hits[0].isKind(of: SCNHitTestResult.self) {  //found an element!
             let node = hits[0].node
+            
+            // IF Hittest player object = true than jump
             if node.name == "player" {
                 playerJumpFunction(to: node)
                 return
@@ -112,7 +106,7 @@ class ViewController: UIViewController {
 
 
     
-    
+    // Tracking informations
     func updateTrackingInfo() {
         
         guard let frame = sceneView.session.currentFrame else {
@@ -145,12 +139,16 @@ class ViewController: UIViewController {
     private func configureWorldBottom() {
         let bottomPlane = SCNBox(width: 5, height: 0.5, length: 5, chamferRadius: 0)
         
+        // Game field
         let material = SCNMaterial()
         material.diffuse.contents = UIColor(white: 1.0, alpha: 1.0)
         bottomPlane.materials = [material]
         
         let bottomNode = SCNNode(geometry: bottomPlane)
         bottomNode.position = SCNVector3(x: 0, y: 1, z: 0)
+        
+        
+        // 
         
 //        let physicsBody = SCNPhysicsBody.static()
 //        physicsBody.categoryBitMask = CollisionTypes.bottom.rawValue
@@ -161,33 +159,30 @@ class ViewController: UIViewController {
 //        self.sceneView.scene.physicsWorld.contactDelegate = self
     }
     
+    
+    
     // Create Random Objects on Node
-    // HELP
+  
     @objc func createRandomObstacles() {
         let pos = fieldNode.worldPosition
         let fieldPlane = fieldNode.geometry as! SCNBox
         
-      
+        // Width height length of Objects
         let obstacleHeight = CGFloat(0.1)
         let obstacleWidth = CGFloat(0.6)
         let obstacleLength = CGFloat(0.1)
         
         
         // Größe des Spielfeldes
-        let width = Float(fieldPlane.width)
+//        let width = Float(fieldPlane.width)
          // print(String(width) + " Width")
         let height = Float(fieldPlane.height)
         let length = Float(fieldPlane.length)
         // print(String(height) + " Height")
         
         
-        
-        // Spielfeld minimum größe
-//        let minX = pos.x
-//        let minZ = pos.z
-//        let minY = pos.y
-        
-        
+
+        // Spawn in Random positions
         let maxX = (Float(GKRandomSource.sharedRandom().nextInt(upperBound: 100))/100)-0.25
         let maxZ = pos.z + length/2
         let maxY = pos.y + height
@@ -217,7 +212,7 @@ class ViewController: UIViewController {
         let fieldPlane = fieldNode.geometry as! SCNBox
         
       
-        
+        // Player size
         
         let playerHeight = CGFloat(0.25)
         let playerWidth = CGFloat(0.1)
@@ -233,12 +228,9 @@ class ViewController: UIViewController {
         
         
         
-        // Spielfeld minimum größe
-        //        let minX = pos.x
-        //        let minZ = pos.z
-        //        let minY = pos.y
+  
         
-        
+        // position of Player figure
         let posX = pos.x - (width-1)
         
         let posY = pos.y + height
@@ -261,6 +253,8 @@ class ViewController: UIViewController {
         
     }
     
+    
+    // Player Jump Function
     func playerJumpFunction(to node: SCNNode){
         //let playerObject = self.fieldNode.childNode(withName: "player", recursively: false)
         //let object = fieldNode.childNode(withName: "player", recursively: true)
@@ -325,7 +319,7 @@ extension ViewController: ARSCNViewDelegate {
         DispatchQueue.main.async {
             if let planeAnchor = anchor as? ARPlaneAnchor {
                 
-                #if DEBUG
+               
                     let planeNode = createPlaneNode(center: planeAnchor.center, extent: planeAnchor.extent)
                     node.addChildNode(planeNode)
                     
@@ -347,7 +341,7 @@ extension ViewController: ARSCNViewDelegate {
                     
                     
                     
-                #endif
+             
                 
                
             } else {
@@ -360,9 +354,7 @@ extension ViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         
         DispatchQueue.main.async {
-           // if let planeAnchor = anchor as? ARPlaneAnchor {
-                // updatePlaneNode(node.childNodes[0], center: planeAnchor.center, extent: planeAnchor.extent)
-           // }
+           
         }
         
     }

@@ -33,7 +33,7 @@ func createRandomObstacleNode(center: vector_float3, width: CGFloat, height: CGF
     
     let planeMaterial = SCNMaterial()
     
-    
+    // Matrial of Obstacles Stone
     planeMaterial.diffuse.contents = "blockstone.jpg"
     
     
@@ -57,7 +57,7 @@ func createPlayerFigureNode(center: vector_float3, width: CGFloat, height: CGFlo
     
     let planeMaterial = SCNMaterial()
     
-    
+    // Material of Player Node
     planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(1)
     
     
@@ -96,20 +96,6 @@ func createFieldNode(center: vector_float3) -> SCNNode {
 
 
 
-//func createFieldNode2(center: vector_float3) -> SCNNode {
-//    let field = SCNBox(width: 0.5, height: 0.05, length: 0.5, chamferRadius: 0)
-//
-//    let planeMaterial = SCNMaterial()
-//    planeMaterial.diffuse.contents = UIColor.red.withAlphaComponent(1)
-//    field.materials = [planeMaterial]
-//
-//    let fieldNode = SCNNode(geometry: field)
-//    fieldNode.position = SCNVector3Make(center.x, 0, 0)
-//    // fieldNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-//
-//    return fieldNode
-//}
-
 
 
 func updatePlaneNode(_ node: SCNNode, center: vector_float3, extent: vector_float3) {
@@ -126,32 +112,7 @@ func removeChildren(inNode node: SCNNode) {
     }
 }
 
-func createSphereNode(radius: CGFloat) -> SCNNode {
-    let sphere = SCNSphere(radius:radius)
-    sphere.firstMaterial?.diffuse.contents = UIColor.red
-    
-    
-    return SCNNode(geometry: sphere)
-}
-
-func createLineNode(fromNode: SCNNode, toNode: SCNNode) -> SCNNode {
-    let line = lineFrom(vector: fromNode.position, toVector: toNode.position)
-    let lineNode = SCNNode(geometry: line)
-    let planeMaterial = SCNMaterial()
-    planeMaterial.diffuse.contents = UIColor.red
-    line.materials = [planeMaterial]
-    return lineNode
-}
-
-func lineFrom(vector vector1: SCNVector3, toVector vector2: SCNVector3) -> SCNGeometry {
-    let indices: [Int32] = [0, 1]
-    
-    let source = SCNGeometrySource(vertices: [vector1, vector2])
-    let element = SCNGeometryElement(indices: indices, primitiveType: .line)
-    
-    return SCNGeometry(sources: [source], elements: [element])
-}
-
+// Apply force not working. Made own function with sequence 
 
 func applyForce(to node: SCNNode) {
     let forceX = Float(GKRandomSource.sharedRandom().nextInt(upperBound: 3))
