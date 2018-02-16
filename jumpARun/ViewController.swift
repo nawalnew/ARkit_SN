@@ -11,12 +11,7 @@ import SceneKit
 import ARKit
 import GameplayKit
 
-//enum FunctionMode {
-//    case none
-//    case addField
-//    case placeObject(String)
-//    case measure
-//}
+
 
 
 class ViewController: UIViewController {
@@ -27,18 +22,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var fieldButton: UIButton!
     
-//    var currentMode: FunctionMode = .none
+
     var planeDetectionActive = true
     var fieldNode = SCNNode()
     
-//    @IBAction func fieldButtonTapped(_ sender: Any) {
-        // configureWorldBottom()
-        // currentMode = .placeObject("Models.scnassets/box/box.scn")
-//        currentMode = .addField
-//    }
+
     
    var objects: [SCNNode] = []
-//    var measuringNodes: [SCNNode] = []
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
